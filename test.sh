@@ -1,0 +1,2 @@
+#!/bin/bash
+ENV=stage-sandbox2; PAGER=""; declare -A profile_to_groupenv=( ["stage-sandbox2"]="dev-deployment" ); for dist_id in $( aws cloudfront list-distributions --profile ${profile_to_groupenv[${ENV}]} --query "DistributionList.Items[?contains(Comment, '${ENV}')].Id" --output text ) ; do aws cloudfront create-invalidation --distribution-id ${dist_id} --paths "/*" --profile ${profile_to_groupenv[${ENV}]}; done
