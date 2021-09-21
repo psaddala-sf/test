@@ -1,0 +1,27 @@
+#!/usr/bin/env groovy
+import org.jenkinsci.plugins.workflow.actions.LabelAction
+//git env vars
+env.jenkins_node_label = 'docsite'
+
+pipeline {
+    agent {
+        node {
+            label "$jenkins_node_label"
+        }
+     }
+     parameters {
+        choice choices: ['stage-sandbox2'], description: 'Environment Group name', name: 'ENV_NAME'
+    }
+    environment {
+        ENV_NAME = "${params.ENV_NAME}"
+    }
+    stages {
+        stage('Invalidate cloudfront cache') {
+            steps {
+                sh '''
+                 ./test.sh 
+                '''
+             }
+        }
+    }
+}
