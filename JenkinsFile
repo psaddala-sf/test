@@ -19,6 +19,7 @@ pipeline {
         stage('Invalidate cloudfront cache') {
             steps {
                 sh '''
+                  chmod 777 test.sh
                  ./test.sh 
                 '''
              }
